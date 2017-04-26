@@ -1,0 +1,60 @@
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+    <CodeSnippet Format="1.0.0">
+        <Header>
+            <Title>Struct with DefaultValue pattern</Title> 
+            <Shortcut>dvpattern</Shortcut> 
+            <Description>Inserts the DefaultValue Pattern at the current location of the struct</Description>
+            <Author>Eik Rentzow</Author> 
+            <SnippetTypes>
+                <SnippetType>Expansion</SnippetType>
+            </SnippetTypes>
+        </Header>
+        <Snippet>
+            <Declarations>
+                <Literal Editable="false">
+                    <ID>classname</ID> 
+                    <ToolTip>Class name</ToolTip> 
+                    <Function>ClassName()</Function> 
+                    <Default>ClassNamePlaceholder</Default> 
+                </Literal>
+                <Literal Editable="true">
+                    <ID>ctorcontent</ID> 
+                    <ToolTip>Custom parameterless constructor code</ToolTip> 
+                    <Default>/* Put your custom c'tor code here */</Default> 
+                </Literal>
+                <Literal Editable="true">
+                    <ID>fieldinit</ID> 
+                    <ToolTip>Field initializers</ToolTip> 
+                    <Default>/* Put your custom field initializers here */</Default> 
+                </Literal>
+            </Declarations>
+            <Code Language="csharp" Format="CData">
+                <![CDATA[ 
+    #region Default Value Pattern
+
+    public static $classname$ DefaultValue = new $classname$()
+    { 
+        $fieldinit$
+    };
+
+    public $classname$(object dummy)
+    {
+        this = DefaultValue;
+        $ctorcontent$
+    }
+
+    public static $classname$[] NewArray(int capacity)
+    {
+        var temp = new $classname$[capacity];
+        for (int i = temp.Length - 1; i >= 0; --i) temp[i] = DefaultValue;
+        return temp;
+    }
+
+    private static $classname$ @__default = default($classname$);
+    public bool IsInitialized => !@__default.Equals(this);
+
+    #endregion                ]]>
+            </Code>
+        </Snippet>
+    </CodeSnippet>
+</CodeSnippets>
